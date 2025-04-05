@@ -1,0 +1,110 @@
+.playlist-selector {
+    margin-top: 1.5rem;
+    color: #fff;
+    text-align: center;
+  }
+  
+  .playlist-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #1db954;
+  }
+  
+  .playlist-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 1.5rem;
+    padding: 0;
+  }
+  
+  .playlist-item {
+    list-style: none;
+    background-color: #1e1e1e;
+    border: 1px solid #2a2a2a;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .playlist-item:hover {
+    background-color: #2a2a2a;
+  }
+  
+  .playlist-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .playlist-btn {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.95rem;
+    border: none;
+    border-radius: 9999px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+  }
+  
+  .playlist-btn:hover {
+    transform: scale(1.05);
+  }
+  
+  .playlist-btn.green {
+    background-color: #1db954;
+    color: #fff;
+  }
+  
+  .playlist-btn.yellow {
+    background-color: #facc15;
+    color: #000;
+  }
+  
+  .playlist-btn.gray {
+    background-color: #333;
+    color: #fff;
+  }
+  
+  .playlist-loading {
+    color: #b3b3b3;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+  }
+  
+  .playlist-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 1.5rem;
+    padding: 0;
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: #1db954 #1e1e1e;
+  }
+  
+  /* Webkit 브라우저용 (Chrome, Edge 등) */
+  .playlist-list::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .playlist-list::-webkit-scrollbar-track {
+    background: #1e1e1e;
+    border-radius: 10px;
+  }
+  
+  .playlist-list::-webkit-scrollbar-thumb {
+    background-color: #1db954cc; /* Spotify Green with some transparency */
+    border-radius: 10px;
+    border: 2px solid #1e1e1e;
+  }
+  
+  .playlist-list::-webkit-scrollbar-thumb:hover {
+    background-color: #1db954;
+  }

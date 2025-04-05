@@ -1,0 +1,71 @@
+.music-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .music-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+  
+  .music-button {
+    padding: 8px 16px;
+    border-radius: 9999px;
+    border: 1px solid #444;
+    background-color: #1e1e1e;
+    color: white;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .music-button:hover {
+    background-color: #2a2a2a;
+  }
+  
+  .music-button.selected {
+    background-color: #1db954;
+    color: black;
+    border-color: #1db954;
+  }
+  
+  .music-input {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #555;
+    background-color: #181818;
+    color: white;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  
+  .music-input:focus {
+    border-color: #1db954;
+  }
+  
+  .select-button {
+    padding: 10px 10px;
+    border-radius: 8px;
+    background-color: #1db954;
+    color: black;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width : 120px;
+    align-self: center;
+  }
+  
+  .select-button:hover {
+    background-color: #17a64a;
+  }
+  

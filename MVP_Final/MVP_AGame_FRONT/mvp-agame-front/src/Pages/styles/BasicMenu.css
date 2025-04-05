@@ -1,0 +1,71 @@
+/* styles/BasicMenu.css */
+
+body {
+  margin: 0;
+  background-color: #121212;
+  font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+}
+
+.music-container {
+  min-height: 100vh;
+  padding: 4rem 2rem;
+  background-color: #121212;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+}
+
+.music-header {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #1DB954;
+  margin-bottom: 1rem;
+}
+
+.user-greeting {
+  font-size: 1.3rem;
+  color: #ccc;
+  margin-bottom: 2.5rem;
+}
+
+.music-controls,
+.ai-button-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.music-button {
+  background-color: #1DB954;
+  color: white;
+  border: none;
+  padding: 0.9rem 1.7rem;
+  border-radius: 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.music-button:hover {
+  background-color: #1ed760;
+  transform: translateY(-2px);
+}
+
+.music-subtitle {
+  font-size: 1.6rem;
+  color: #eeeeee;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.ai-recommendations {
+  margin-top: 3rem;
+  max-width: 800px;
+}
