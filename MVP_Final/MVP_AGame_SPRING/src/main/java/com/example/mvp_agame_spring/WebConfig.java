@@ -24,12 +24,15 @@ public class WebConfig implements WebMvcConfigurer{
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/{spring:[a-zA-Z0-9-]+}")
+        registry.addViewController("/{spring:(?!api).*}")
                 .setViewName("forward:/index.html");
-        registry.addViewController("/**/{spring:[a-zA-Z0-9-]+}")
+        registry.addViewController("/**/{spring:(?!api).*}")
                 .setViewName("forward:/index.html");
-
+        registry.addViewController("/{spring:(?!api).*}/**{spring:?!(\\.js|\\.css)$}")
+                .setViewName("forward:/index.html");
     }
+
+}
 
 /*
 .allowedOrigins("https://your-frontend.com") // 정확한 도메인 지정
