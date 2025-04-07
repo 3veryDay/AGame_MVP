@@ -22,17 +22,14 @@ public class WebConfig implements WebMvcConfigurer{
                 .maxAge(3600);
     }
 
+    // ✅ 여기에 api 경로 제외하도록 수정
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/{spring:(?!api).*$}")
+        registry.addViewController("/{spring:[\\w\\-]+}")
                 .setViewName("forward:/index.html");
-        registry.addViewController("/**/{spring:(?!api).*$}")
-                .setViewName("forward:/index.html");
-        registry.addViewController("/{spring:(?!api).*$}/**{spring:?!(\\.js|\\.css)$}")
+        registry.addViewController("/**/{spring:^(?!api|static|js|css|favicon\\.ico|manifest\\.json).*$}")
                 .setViewName("forward:/index.html");
     }
-
-
 }
 
 /*
