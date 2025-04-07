@@ -26,11 +26,11 @@ public class WebConfig implements WebMvcConfigurer{
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/{spring:\\w+}")
+        registry.addViewController("/{spring:[a-zA-Z0-9-_]+}")
                 .setViewName("forward:/index.html");
-        registry.addViewController("/**/{spring:\\w+}")
+        registry.addViewController("/**/{spring:[a-zA-Z0-9-_]+}")
                 .setViewName("forward:/index.html");
-        registry.addViewController("/{spring:\\w+}/**{spring:?!(\\.js|\\.css|\\.json|\\.png|\\.jpg)$}")
+        registry.addViewController("/{spring:[a-zA-Z0-9-_]+}/**{spring:[a-zA-Z0-9-_]+}")
                 .setViewName("forward:/index.html");
     }
 }
