@@ -28,6 +28,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class SpotifyTestController {
 
+    @Value("${frontend.redirectUri}")
+    private String frontendRedirectUri;
+
     @Value("${spotify.client.id}")
     private String clientId;
 
@@ -87,7 +90,7 @@ public class SpotifyTestController {
 
             // ✅ 리디렉션 (code 제거된 상태)
             return ResponseEntity.status(HttpStatus.FOUND)
-                    .header("Location", "http://localhost:3000/dashboard")
+                    .header("Location", frontendRedirectUri)
                     .build();
 
         } catch (Exception e) {
