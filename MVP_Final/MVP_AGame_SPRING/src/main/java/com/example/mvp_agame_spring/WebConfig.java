@@ -24,15 +24,12 @@ public class WebConfig implements WebMvcConfigurer{
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        // Forward all routes to index.html, excluding API routes
-        registry.addViewController("/")
+        registry.addViewController("/{spring:[a-zA-Z0-9-]+}")
                 .setViewName("forward:/index.html");
-        registry.addViewController("/{path:[^\\.]*}")
+        registry.addViewController("/**/{spring:[a-zA-Z0-9-]+}")
                 .setViewName("forward:/index.html");
-        registry.addViewController("/{path:[^\\.]*}/**{path:[^\\.]*}")
-                .setViewName("forward:/index.html");
+
     }
-}
 
 /*
 .allowedOrigins("https://your-frontend.com") // 정확한 도메인 지정
