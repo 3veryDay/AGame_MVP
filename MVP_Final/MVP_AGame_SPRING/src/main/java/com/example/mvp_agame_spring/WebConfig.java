@@ -10,27 +10,26 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer{
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*")
-                        .allowCredentials(true);
-            }
-        };
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:3000", "http://13.209.50.203:8080")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                .exposedHeaders("Set-Cookie", "Authorization")
+                .allowCredentials(true)
+                .maxAge(3600);
     }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/{spring:[a-zA-Z0-9-_]+}")
+        // Forward all routes to index.html, excluding API routes
+        registry.addViewController("/")
                 .setViewName("forward:/index.html");
-        registry.addViewController("/**/{spring:[a-zA-Z0-9-_]+}")
+        registry.addViewController("/{path:[^\\.]*}")
                 .setViewName("forward:/index.html");
-        registry.addViewController("/{spring:[a-zA-Z0-9-_]+}/**{spring:[a-zA-Z0-9-_]+}")
+        registry.addViewController("/{path:[^\\.]*}/**{path:[^\\.]*}")
                 .setViewName("forward:/index.html");
     }
 }
