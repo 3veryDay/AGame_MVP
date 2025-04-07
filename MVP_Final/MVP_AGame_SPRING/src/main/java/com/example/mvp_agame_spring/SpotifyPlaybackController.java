@@ -19,7 +19,7 @@ POST	/spotify/playback/next	    다음 트랙
 POST	/spotify/playback/previous  이전 트랙
  */
 @RestController
-@RequestMapping("/spotify/playback")
+@RequestMapping("/api/spotify/playback")
 public class SpotifyPlaybackController {
 
     @GetMapping("/track-info")

@@ -24,7 +24,7 @@ import java.net.http.HttpResponse;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/spotify")
+@RequestMapping("/api/spotify")
 @RequiredArgsConstructor
 public class SpotifyTestController {
 

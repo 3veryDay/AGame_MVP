@@ -19,7 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/spotify/music")
+@RequestMapping("/api/spotify/music")
 @RequiredArgsConstructor
 public class SpotifyMusicController {
 
