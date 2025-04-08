@@ -1,72 +1,47 @@
 # workflow의 이름
 name: Deploy to Amazon EC2 / Spring Boot with Maven
+on:
+  push:
+    branches:
+      - main  # 또는 배포에 쓸 브랜치 이름
 
+      
 # 환경 변수 $변수명으로 사용
 env:
   PROJECT_NAME: AGame_MVP
   BUCKET_NAME: agame-bucket
   CODE_DEPLOY_APP: agame-codedeploy-app
   CODE_DEPLOY_DEPLOYMENT_GROUP: Agame-codedeploy-deployment-group
-  
 
-# 해당 workflow가 언제 실행될 것인지에 대한 트리거를 지정
-on:
-  release:
-    types: [created]
 
-# workflow는 한개 이상의 job을 가지며, 각 job은 여러 step에 따라 단계를 나눌 수 있습니다.
 jobs:
-  build:
-    name: CI/CD
-    # 해당 jobs에서 아래의 steps들이 어떠한 환경에서 실행될 것인지를 지정합니다.
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 작업에서 액세스할 수 있도록 $GITHUB_WORKSPACE에서 저장소를 체크아웃합니다.
-      - uses: actions/checkout@v2
-      
-      # Spring 구동을 위한 JDK 11을 세팅합니다.
-      - name: Set up JDK 11
-        uses: actions/setup-java@v2
-        with:
-          java-version: '11'
-          distribution: 'zulu'
-     
-      # Caching dependencies (디펜던시를 캐싱하여 반복적인 빌드 작업의 시간을 단축할 수 있다.)
-      - name: Cache Maven packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-    
-      # Build
-      - name: Build with Maven
-        run: mvn -B package --file pom.xml
+      - name: Checkout source code
+        uses: actions/checkout@v3
 
-      # build한 후 프로젝트를 압축한다.
-      - name: Make zip file
-        run: zip -r ./$PROJECT_NAME.zip .
-        shell: bash
-      
-      # aws 인증서비스
-      # github repository에서 Setting에서 사용할 암호화된 변수
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            aws-region: ${{ secrets.AWS_REGION}}
+      - name: Zip deployment package
+        run: |
+          zip -r $PROJECT_NAME.zip MVP_AGame_SPRING Dockerfile appspec.yml deploy.sh
 
-      # Upload to S3 stroage
       - name: Upload to S3
-        run: aws s3 cp $PROJECT_NAME.zip s3://$BUCKET_NAME/deploy/$PROJECT_NAME.zip --region ap-northeast-2
+        run: |
+          aws s3 cp $PROJECT_NAME.zip s3://$BUCKET_NAME/deploy/$PROJECT_NAME.zip \
+            --region ${{ secrets.AWS_REGION }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      # CodeDeploy에게 배포 명령을 내린다.
-      - name: Code Deploy
-        run: >
-         aws deploy create-deployment --application-name $CODE_DEPLOY_APP
-         --deployment-config-name CodeDeployDefault.AllAtOnce
-         --deployment-group-name $CODE_DEPLOY_DEPLOYMENT_GROUP
-         --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=deploy/$PROJECT_NAME.zip
-
+      - name: Trigger CodeDeploy
+        run: |
+          aws deploy create-deployment \
+            --application-name $CODE_DEPLOY_APP \
+            --deployment-config-name CodeDeployDefault.AllAtOnce \
+            --deployment-group-name $CODE_DEPLOY_DEPLOYMENT_GROUP \
+            --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=deploy/$PROJECT_NAME.zip \
+            --region ${{ secrets.AWS_REGION }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
