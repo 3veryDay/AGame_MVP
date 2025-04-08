@@ -23,7 +23,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/api/spotify")
 @RequiredArgsConstructor
 public class SpotifyTestController {

@@ -18,7 +18,7 @@ import java.net.http.HttpRequest;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/api/spotify/music")
 @RequiredArgsConstructor
 public class SpotifyMusicController {
