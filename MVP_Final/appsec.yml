@@ -3,17 +3,17 @@ os: linux
 
 files:
   - source: /
-    destination: /home/ubuntu/AGame_MVP
+    destination: /home/ubuntu/MVP_Final
     overwrite: yes
 
 permissions:
-  - object: /home/ubuntu/AGame_MVP
+  - object: /home/ubuntu/MVP_Final
     pattern: "**"
     owner: ubuntu
     group: ubuntu
 
 hooks:
   AfterInstall:
-    - location: deploy.sh
+    - location: MVP_Final/deploy.sh
       timeout: 500
       runas: root
