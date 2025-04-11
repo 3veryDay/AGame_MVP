@@ -35,3 +35,7 @@ docker build -t $APP_NAME $BACKEND
 
 echo "> 7. Docker 컨테이너 실행"
 docker run -d -p 3000:8080 --name $APP_NAME $APP_NAME
+
+
+echo "> 8. 컨테이너 로그 확인 (실시간 출력)"
+docker logs -f $APP_NAME
