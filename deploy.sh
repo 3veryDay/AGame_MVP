@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 APP_NAME=agame-app
-REPOSITORY=/home/ubuntu/MVP_Final
+REPOSITORY=/home/ubuntu/AGame_MVP/MVP_Final
 FRONTEND=$REPOSITORY/mvp-agame-front
 BACKEND=$REPOSITORY/MVP_AGame_SPRING
 
