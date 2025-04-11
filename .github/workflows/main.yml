@@ -24,12 +24,13 @@ jobs:
 
       - name: Zip deployment package
         run: |
-          mkdir -p $PROJECT_NAME
-          cp -r MVP_Final $PROJECT_NAME/
+          mkdir -p $PROJECT_NAME/MVP_Final
+          cp -r MVP_AGame_SPRING $PROJECT_NAME/MVP_Final/
           cp deploy.sh appspec.yml Dockerfile $PROJECT_NAME/
           cd $PROJECT_NAME
           zip -r ../$PROJECT_NAME.zip .
           cd ..
+
 
       - name: Upload to S3
         run: |
