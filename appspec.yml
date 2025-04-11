@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 
 files:
-  - source: .
+  - source: AGame_MVP/
     destination: /home/ubuntu/AGame_MVP
     overwrite: yes
 
