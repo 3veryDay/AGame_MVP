@@ -16,6 +16,7 @@ cp -r build/* $BACKEND/src/main/resources/static/
 
 echo "> 3. Spring Boot JAR 빌드"
 cd $BACKEND
+chmod +x mvnw 
 ./mvnw package -DskipTests
 
 echo "> 4. 기존 Docker 컨테이너 중지 및 삭제"
