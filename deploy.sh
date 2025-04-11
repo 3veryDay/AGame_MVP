@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 APP_NAME=agame-app
-REPOSITORY=/home/ubuntu/MVP_Final
+REPOSITORY=/home/ubuntu/AGame_MVP/MVP_Final
 FRONTEND=$REPOSITORY/mvp-agame-front
 BACKEND=$REPOSITORY/MVP_AGame_SPRING
 
@@ -30,9 +30,6 @@ echo "> 5. 기존 Docker 이미지 삭제"
 docker rmi $APP_NAME
 
 echo "> 6. 새 Docker 이미지 빌드"
-# ✅ Dockerfile이 $BACKEND 디렉토리에 있으므로, build context도 거기로 이동
-docker build -t $APP_NAME .   # ← 이 줄은 아래처럼 수정!
-# 🔧 수정 후:
 docker build -t $APP_NAME $BACKEND
 
 echo "> 7. Docker 컨테이너 실행"
