@@ -26,7 +26,7 @@ jobs:
         run: |
           mkdir -p $PROJECT_NAME/MVP_Final
           cp -r MVP_Final/MVP_AGame_SPRING MVP_Final/mvp-agame-front $PROJECT_NAME/MVP_Final/
-          cp MVP_Final/deploy.sh MVP_Final/appspec.yml MVP_Final/MVP_AGame_SPRING/Dockerfile $PROJECT_NAME/
+          cp MVP_Final/MVP_AGame_SPRING/Dockerfile $PROJECT_NAME/
           cd $PROJECT_NAME
           zip -r ../$PROJECT_NAME.zip .
           cd ..
