@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 APP_NAME=agame-app
-REPOSITORY=/home/ubuntu/MVP_Final
+REPOSITORY=/home/ubuntu/AGame_MVP/MVP_Final
 FRONTEND=$REPOSITORY/mvp-agame-front
 BACKEND=$REPOSITORY/MVP_AGame_SPRING
 
@@ -30,7 +30,7 @@ echo "> 5. 기존 Docker 이미지 삭제"
 docker rmi $APP_NAME
 
 echo "> 6. 새 Docker 이미지 빌드"
-docker build -t $APP_NAME .
+docker build -t $APP_NAME $BACKEND
 
 echo "> 7. Docker 컨테이너 실행"
 docker run -d -p 3000:8080 --name $APP_NAME $APP_NAME
