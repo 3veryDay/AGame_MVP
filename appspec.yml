@@ -3,11 +3,11 @@ os: linux
 
 files:
   - source: /
-    destination: /home/ubuntu/MVP_Final
+    destination: /home/ubuntu/AGame_MVP/MVP_Final
     overwrite: yes
 
 permissions:
-  - object: /home/ubuntu/MVP_Final
+  - object: /home/ubuntu/AGame_MVP/MVP_Final
     pattern: "**"
     owner: ubuntu
     group: ubuntu
