@@ -1,0 +1,57 @@
+.interval-container {
+    min-height: 100vh;
+    background-color: #ffffff;
+    padding: 2rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .interval-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .pattern-count {
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .pattern-count label {
+    margin-right: 0.5rem;
+    font-weight: 500;
+  }
+  
+  .pattern-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    justify-content: center;
+  }
+  
+  .pattern-row input {
+    width: 60px;
+    padding: 0.5rem;
+    text-align: center;
+  }
+  
+  .next-btn {
+    margin-top: 2rem;
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    background-color: #1a73e8;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .next-btn:hover {
+    background-color: #0f5dc2;
+  }
+  
