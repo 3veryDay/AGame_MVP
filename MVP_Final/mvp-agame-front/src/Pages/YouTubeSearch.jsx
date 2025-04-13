@@ -24,41 +24,23 @@ const YouTubeSearch = () => {
     if (!query) return;
     setLoading(true);
     try {
-      const res = await axios.get("https://www.googleapis.com/youtube/v3/search", {
+      const res = await axios.get("/api/youtube/search", {
         params: {
-          part: "snippet",
           q: query,
-          type: "video",
-          maxResults: 10,
-          key: YOUTUBE_API_KEY,
           pageToken: isLoadMore ? nextPageToken : undefined,
         },
       });
-      const videoIds = res.data.items.map((item) => item.id.videoId).join(",");
-
-      const detailsRes = await axios.get("https://www.googleapis.com/youtube/v3/videos", {
-        params: {
-          part: "contentDetails",
-          id: videoIds,
-          key: YOUTUBE_API_KEY,
-        },
-      });
-
-      const durations = detailsRes.data.items.map((item) => item.contentDetails.duration);
-
-      const newVideos = res.data.items.map((item, idx) => ({
-        videoId: item.id.videoId,
-        title: item.snippet.title,
-        thumbnail: item.snippet.thumbnails.medium.url,
-        channel: item.snippet.channelTitle,
-        publishedAt: item.snippet.publishedAt,
-        duration: durations[idx],
-      }));
-
-      setVideos((prev) => (isLoadMore ? [...prev, ...newVideos] : newVideos));
-      setNextPageToken(res.data.nextPageToken);
+  
+      const searchItems = res.data.search.items;
+      const details = res.data.details.items;
+  
+      // 🎯 여기서 searchItems와 duration 정보 매칭해서 필요한 데이터 가공
+  
+      setVideos((prev) => [...prev, ...searchItems]);
+      setNextPageToken(res.data.search.nextPageToken);
+  
     } catch (err) {
-      console.error("YouTube API error:", err);
+      console.error("YouTube API 에러:", err);
     } finally {
       setLoading(false);
     }
