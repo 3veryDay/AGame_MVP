@@ -36,4 +36,4 @@ echo "> 6. Docker 컨테이너 실행"
 docker run -d -p 8080:8080 --name $APP_NAME $APP_NAME
 
 echo "> 7. 컨테이너 로그 확인 (실시간 출력)"
-docker logs -f $APP_NAME
+docker logs -f $APP_NAME &
