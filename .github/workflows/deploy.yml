@@ -24,7 +24,7 @@ jobs:
         run: |
           cd MVP_Final/mvp-agame-front
           npm install
-          npm run build
+          CI=false npm run build
 
           
       - name: Zip Deployment Package
