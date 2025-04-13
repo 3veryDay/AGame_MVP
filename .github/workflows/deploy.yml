@@ -13,9 +13,12 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      - name: Set Dynamic Bundle Name
+        run: echo "BUNDLE_NAME=AGame_MVP-${{ github.sha }}.zip" >> $GITHUB_ENV
+
       - name: Zip Deployment Package
         run: |
-          zip -r AGame_MVP.zip MVP_Final deploy.sh appspec.yml Dockerfile
+          zip -r ${{ env.BUNDLE_NAME }} MVP_Final deploy.sh appspec.yml Dockerfile
 
       - name: Upload to S3
         uses: jakejarvis/s3-sync-action@master
@@ -35,7 +38,7 @@ jobs:
           application-name: ${{ secrets.DEPLOY_APP }}
           deployment-group: ${{ secrets.DEPLOY_GROUP }}
           bucket: ${{ secrets.S3_BUCKET }}
-          bundle-key: AGame_MVP.zip
+          bundle-key: ${{ env.BUNDLE_NAME }}
           bundle-type: zip
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
