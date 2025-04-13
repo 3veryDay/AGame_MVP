@@ -22,6 +22,7 @@ jobs:
 
       - name: Zip Deployment Package
         run: |
+          echo "💡 ZIP 파일명: ${{ env.BUNDLE_NAME }}"
           zip -r ${{ env.BUNDLE_NAME }} MVP_Final deploy.sh appspec.yml Dockerfile
 
       - name: Upload to S3
