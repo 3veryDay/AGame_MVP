@@ -45,3 +45,9 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
 
+      - name: 확인용 - 현재 코드 상태 출력
+        run: |
+          echo "🔍 MVP_Final 안의 최근 커밋:"
+          cd MVP_Final
+          git log -1 || echo "로컬 git 로그 없음"
+          ls -R
