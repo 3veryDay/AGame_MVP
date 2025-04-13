@@ -12,7 +12,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-
+      - name: Add execute permission to deploy.sh
+        run: chmod +x deploy.sh
       - name: Set Dynamic Bundle Name
         run: echo "BUNDLE_NAME=AGame_MVP-${{ github.sha }}.zip" >> $GITHUB_ENV
       - name: Fetch latest code from GitHub
