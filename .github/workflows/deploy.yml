@@ -12,32 +12,52 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+      - name: Add execute permission to deploy.sh
+        run: chmod +x deploy.sh
 
+        
+      - name: Set Dynamic Bundle Name
+        run: echo "BUNDLE_NAME=AGame_MVP-${{ github.sha }}.zip" >> $GITHUB_ENV
+
+
+      - name: Build React App
+        run: |
+          cd MVP_Final/mvp-agame-front
+          npm install
+          CI=false npm run build
+
+          
       - name: Zip Deployment Package
         run: |
-          zip -r AGame_MVP.zip MVP_Final deploy.sh appspec.yml Dockerfile
+          echo "💡 ZIP 파일명: ${{ env.BUNDLE_NAME }}"
+          zip -r ${{ env.BUNDLE_NAME }} MVP_Final deploy.sh appspec.yml Dockerfile cleanup.sh
 
-      - name: Upload to S3
-        uses: jakejarvis/s3-sync-action@master
-        with:
-          args: --acl private --follow-symlinks
+      - name: Upload ZIP to S3 (정확한 zip만)
+        run: |
+          echo "🚀 업로드 중: ${{ env.BUNDLE_NAME }}"
+          aws s3 cp ${{ env.BUNDLE_NAME }} s3://$AWS_S3_BUCKET/deploy/${{ env.BUNDLE_NAME }} --region $AWS_REGION
         env:
           AWS_S3_BUCKET: ${{ secrets.S3_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ap-northeast-2
-          SOURCE_DIR: .
-          DEST_DIR: /AGame_MVP
+          AWS_REGION: ${{ secrets.AWS_REGION }}
 
-      - name: Trigger CodeDeploy
-        uses: webfactory/create-aws-codedeploy-deployment@v0.3.1
-        with:
-          application-name: ${{ secrets.DEPLOY_APP }}
-          deployment-group: ${{ secrets.DEPLOY_GROUP }}
-          bucket: ${{ secrets.S3_BUCKET }}
-          bundle-key: AGame_MVP.zip
-          bundle-type: zip
+      - name: Trigger CodeDeploy (CLI 방식)
+        run: |
+          aws deploy create-deployment \
+            --application-name ${{ secrets.DEPLOY_APP }} \
+            --deployment-config-name CodeDeployDefault.AllAtOnce \
+            --deployment-group-name ${{ secrets.DEPLOY_GROUP }} \
+            --s3-location bucket=${{ secrets.S3_BUCKET }},bundleType=zip,key=deploy/AGame_MVP-${{ github.sha }}.zip \
+            --region ${{ secrets.AWS_REGION }}
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ap-northeast-2
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+
+      - name: 확인용 - 현재 코드 상태 출력
+        run: |
+          echo "🔍 MVP_Final 안의 최근 커밋:"
+          cd MVP_Final
+          git log -1 || echo "로컬 git 로그 없음"
+          ls -R
