@@ -9,8 +9,6 @@ files:
 permissions:
   - object: /home/ubuntu/AGame_MVP
     pattern: "**"
-    owner: ubuntu
-    group: ubuntu
     runas : ubuntu
 
 hooks:
