@@ -12,6 +12,10 @@ permissions:
     runas : ubuntu
 
 hooks:
+  BeforeInstall:
+    - location: cleanup.sh
+      timeout: 300
+      runas: root
   AfterInstall:
     - location: deploy.sh
       timeout: 500
