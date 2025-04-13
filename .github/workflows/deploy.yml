@@ -30,7 +30,7 @@ jobs:
           DEST_DIR: /AGame_MVP
 
       - name: Trigger CodeDeploy
-        uses: webfactory/create-aws-codedeploy-deployment@v0.3.1
+        uses: webfactory/create-aws-codedeploy-deployment@v0.2.0
         with:
           application-name: ${{ secrets.DEPLOY_APP }}
           deployment-group: ${{ secrets.DEPLOY_GROUP }}
