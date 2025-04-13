@@ -82,7 +82,16 @@ const Interval = () => {
   };
 
   const playPlaylist = async (playlist, shouldShuffle, hasShuffled, markShuffled) => {
-    try {
+     try {
+    // ✅ 무조건 context 반복 (플레이리스트 전체 반복)
+    await fetch(
+      `https://api.spotify.com/v1/me/player/repeat?state=context&device_id=${deviceId}`,
+      {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    
       if (shouldShuffle && !hasShuffled) {
         await fetch(
           `https://api.spotify.com/v1/me/player/shuffle?state=true&device_id=${deviceId}`,
