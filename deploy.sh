@@ -5,6 +5,10 @@ REPOSITORY=/home/ubuntu/AGame_MVP/MVP_Final
 FRONTEND=$REPOSITORY/mvp-agame-front
 BACKEND=$REPOSITORY/MVP_AGame_SPRING
 
+
+echo "> 0. 혹시 실행 중인 java 프로세스 종료"
+pkill -f 'java -jar' || echo "기존 java 프로세스 없음"
+
 echo "> 1. React 빌드 결과 → Spring static 디렉토리로 복사"
 rm -rf $BACKEND/src/main/resources/static/*
 cp -r $FRONTEND/build/* $BACKEND/src/main/resources/static/
