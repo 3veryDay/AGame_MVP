@@ -25,17 +25,15 @@ jobs:
           echo "💡 ZIP 파일명: ${{ env.BUNDLE_NAME }}"
           zip -r ${{ env.BUNDLE_NAME }} MVP_Final deploy.sh appspec.yml Dockerfile
 
-      - name: Upload to S3
-        uses: jakejarvis/s3-sync-action@master
-        with:
-          args: --acl private --follow-symlinks
+      - name: Upload ZIP to S3 (정확한 zip만)
+        run: |
+          echo "🚀 업로드 중: ${{ env.BUNDLE_NAME }}"
+          aws s3 cp ${{ env.BUNDLE_NAME }} s3://$AWS_S3_BUCKET/deploy/${{ env.BUNDLE_NAME }} --region $AWS_REGION
         env:
           AWS_S3_BUCKET: ${{ secrets.S3_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ap-northeast-2
-          SOURCE_DIR: .
-          DEST_DIR: /AGame_MVP
+          AWS_REGION: ${{ secrets.AWS_REGION }}
 
       - name: Trigger CodeDeploy (CLI 방식)
         run: |
