@@ -28,7 +28,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class SpotifyTestController {
 
-    @Value("${frontend.redirectUri.dev}")
+    @Value("${frontend.redirectUri}")
     private String frontendRedirectUri;
 
     @Value("${spotify.client.id}")
@@ -37,7 +37,7 @@ public class SpotifyTestController {
     @Value("${spotify.client.secret.id}")
     private String clientSecret;
 
-    @Value("${spotify.redirectUri.dev}")
+    @Value("${spotify.redirectUri}")
     private String redirectUri;
 
     @GetMapping("/login")
