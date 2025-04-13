@@ -38,7 +38,7 @@ jobs:
             --application-name ${{ secrets.DEPLOY_APP }} \
             --deployment-config-name CodeDeployDefault.AllAtOnce \
             --deployment-group-name ${{ secrets.DEPLOY_GROUP }} \
-            --s3-location bucket=${{ secrets.S3_BUCKET }},bundleType=zip,key=AGame_MVP-${{ github.sha }}.zip \
+            --s3-location bucket=${{ secrets.S3_BUCKET }},bundleType=zip,key=deploy/AGame_MVP-${{ github.sha }}.zip \
             --region ${{ secrets.AWS_REGION }}
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
