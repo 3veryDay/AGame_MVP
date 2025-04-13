@@ -14,14 +14,19 @@ jobs:
         uses: actions/checkout@v3
       - name: Add execute permission to deploy.sh
         run: chmod +x deploy.sh
+
+        
       - name: Set Dynamic Bundle Name
         run: echo "BUNDLE_NAME=AGame_MVP-${{ github.sha }}.zip" >> $GITHUB_ENV
-      - name: Fetch latest code from GitHub
-        run: |
-          git clone https://github.com/3veryDay/AGame_MVP.git MVP_Final
-          rm -rf MVP_Final
-          
 
+
+      - name: Build React App
+        run: |
+          cd MVP_Final/mvp-agame-front
+          npm install
+          npm run build
+
+          
       - name: Zip Deployment Package
         run: |
           echo "💡 ZIP 파일명: ${{ env.BUNDLE_NAME }}"
