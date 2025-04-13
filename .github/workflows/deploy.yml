@@ -18,8 +18,9 @@ jobs:
         run: echo "BUNDLE_NAME=AGame_MVP-${{ github.sha }}.zip" >> $GITHUB_ENV
       - name: Fetch latest code from GitHub
         run: |
-          rm -rf MVP_Final
           git clone https://github.com/3veryDay/AGame_MVP.git MVP_Final
+          rm -rf MVP_Final
+          
 
       - name: Zip Deployment Package
         run: |
