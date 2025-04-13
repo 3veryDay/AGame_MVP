@@ -11,6 +11,7 @@ permissions:
     pattern: "**"
     owner: ubuntu
     group: ubuntu
+    runas : ubuntu
 
 hooks:
   AfterInstall:
