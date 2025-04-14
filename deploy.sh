@@ -33,7 +33,7 @@ echo "> 5. 새 Docker 이미지 빌드"
 docker build -t $APP_NAME $BACKEND
 
 echo "> 6. Docker 컨테이너 실행"
-docker run -d -p 8080:8080 --name $APP_NAME $APP_NAME
+docker run -d --env-file docker.env -p 8080:8080 --name $APP_NAME $APP_NAME
 
 echo "> 7. 컨테이너 로그 확인 (실시간 출력)"
 docker logs -f $APP_NAME &
