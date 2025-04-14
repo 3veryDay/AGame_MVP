@@ -1,10 +1,49 @@
+# #!/usr/bin/env bash
+
+# APP_NAME=agame-app
+# REPOSITORY=/home/ubuntu/AGame_MVP/MVP_Final
+# FRONTEND=$REPOSITORY/mvp-agame-front
+# BACKEND=$REPOSITORY/MVP_AGame_SPRING
+
+
+# echo "> 0. 혹시 실행 중인 java 프로세스 종료"
+# pkill -f 'java -jar' || echo "기존 java 프로세스 없음"
+
+# echo "> 1. React 빌드 결과 → Spring static 디렉토리로 복사"
+# rm -rf $BACKEND/src/main/resources/static/*
+# cp -r $FRONTEND/build/* $BACKEND/src/main/resources/static/
+
+# echo "> 2. Spring Boot JAR 빌드"
+# cd $BACKEND
+# chmod +x mvnw 
+# ./mvnw package -DskipTests
+
+# echo "> 3. 기존 Docker 컨테이너 중지 및 삭제"
+# CONTAINER_ID=$(docker ps -aqf "name=$APP_NAME")
+# if [ -n "$CONTAINER_ID" ]; then
+#   echo "> 중단 및 삭제: $CONTAINER_ID"
+#   docker stop "$CONTAINER_ID"
+#   docker rm "$CONTAINER_ID"
+# fi
+
+# echo "> 4. 기존 Docker 이미지 삭제"
+# docker rmi -f $APP_NAME 2>/dev/null || echo "> 삭제할 이미지 없음"
+
+# echo "> 5. 새 Docker 이미지 빌드"
+# docker build -t $APP_NAME $BACKEND
+
+# echo "> 6. Docker 컨테이너 실행"
+# docker run -d --env-file docker.env -p 8080:8080 --name $APP_NAME $APP_NAME
+
+# echo "> 7. 컨테이너 로그 확인 (실시간 출력)"
+# docker logs -f $APP_NAME &
 #!/usr/bin/env bash
 
 APP_NAME=agame-app
 REPOSITORY=/home/ubuntu/AGame_MVP/MVP_Final
 FRONTEND=$REPOSITORY/mvp-agame-front
 BACKEND=$REPOSITORY/MVP_AGame_SPRING
-
+ENV_FILE=/home/ubuntu/AGame_MVP/docker.env  # ← 여기에 경로 명시 (zip 포함 대상이면 $REPOSITORY로 옮겨도 됨)
 
 echo "> 0. 혹시 실행 중인 java 프로세스 종료"
 pkill -f 'java -jar' || echo "기존 java 프로세스 없음"
@@ -33,7 +72,12 @@ echo "> 5. 새 Docker 이미지 빌드"
 docker build -t $APP_NAME $BACKEND
 
 echo "> 6. Docker 컨테이너 실행"
-docker run -d --env-file docker.env -p 8080:8080 --name $APP_NAME $APP_NAME
+if [ ! -f "$ENV_FILE" ]; then
+  echo "❌ docker.env 파일을 찾을 수 없습니다: $ENV_FILE"
+  exit 1
+fi
+
+docker run -d --env-file "$ENV_FILE" -p 8080:8080 --name $APP_NAME $APP_NAME
 
 echo "> 7. 컨테이너 로그 확인 (실시간 출력)"
 docker logs -f $APP_NAME &
