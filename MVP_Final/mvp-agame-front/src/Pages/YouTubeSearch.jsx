@@ -24,21 +24,14 @@ const YouTubeSearch = () => {
     if (!query) return;
     setLoading(true);
     try {
-      const res = await axios.get("/api/youtube/search", {
-        params: {
-          q: query,
-          pageToken: isLoadMore ? nextPageToken : undefined,
-        },
-      });
-  
-      const searchItems = res.data.search.items;
-      const details = res.data.details.items;
-  
-      // 🎯 여기서 searchItems와 duration 정보 매칭해서 필요한 데이터 가공
-  
-      setVideos((prev) => [...prev, ...searchItems]);
-      setNextPageToken(res.data.search.nextPageToken);
-  
+        const res = await axios.get("/api/youtube/search", {
+            params: {
+              q: query,
+              pageToken: isLoadMore ? nextPageToken : undefined,
+            },
+          });
+          setVideos((prev) => [...prev, ...res.data.videos]);
+          setNextPageToken(res.data.nextPageToken);
     } catch (err) {
       console.error("YouTube API 에러:", err);
     } finally {

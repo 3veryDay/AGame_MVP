@@ -2,6 +2,7 @@ package com.example.mvp_agame_spring;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,35 +32,58 @@ public class YoutubeController {
                                            @RequestParam(required = false) String pageToken) {
         try {
             RestTemplate restTemplate = new RestTemplate();
+            ObjectMapper mapper = new ObjectMapper();
 
-            // 1. 검색
+            // 1. YouTube 검색 API 호출
             String searchUrl = "https://www.googleapis.com/youtube/v3/search"
                     + "?part=snippet&type=video&maxResults=10"
                     + "&q=" + URLEncoder.encode(q, StandardCharsets.UTF_8)
                     + (pageToken != null ? "&pageToken=" + pageToken : "")
                     + "&key=" + youtubeApiKey;
 
-            JsonNode searchResponse = new ObjectMapper()
-                    .readTree(restTemplate.getForObject(searchUrl, String.class));
+            JsonNode searchResponse = mapper.readTree(restTemplate.getForObject(searchUrl, String.class));
 
-            // 2. videoId 목록 뽑기
+            // 2. videoId 목록 추출
             String videoIds = StreamSupport.stream(searchResponse.get("items").spliterator(), false)
                     .map(item -> item.get("id").get("videoId").asText())
                     .collect(Collectors.joining(","));
 
-            // 3. 상세 정보 조회
+            if (videoIds.isEmpty()) {
+                ObjectNode result = mapper.createObjectNode();
+                result.set("videos", mapper.createObjectNode());
+                result.put("nextPageToken", "");
+                return ResponseEntity.ok(result);
+            }
+
+            // 3. 영상 상세 정보 API 호출
             String detailsUrl = "https://www.googleapis.com/youtube/v3/videos"
                     + "?part=contentDetails"
                     + "&id=" + videoIds
                     + "&key=" + youtubeApiKey;
 
-            JsonNode detailsResponse = new ObjectMapper()
-                    .readTree(restTemplate.getForObject(detailsUrl, String.class));
+            JsonNode detailsResponse = mapper.readTree(restTemplate.getForObject(detailsUrl, String.class));
 
-            // 4. 필요하면 search + details 응답을 합쳐서 내려줌 (or 그냥 그대로 반환)
-            ObjectNode result = new ObjectMapper().createObjectNode();
-            result.set("search", searchResponse);
-            result.set("details", detailsResponse);
+            // 4. 검색 정보 + 상세 정보 결합
+            ArrayNode videoList = mapper.createArrayNode();
+            for (int i = 0; i < searchResponse.get("items").size(); i++) {
+                JsonNode searchItem = searchResponse.get("items").get(i);
+                JsonNode detailItem = detailsResponse.get("items").get(i);
+
+                ObjectNode video = mapper.createObjectNode();
+                video.put("videoId", searchItem.get("id").get("videoId").asText());
+                video.put("title", searchItem.get("snippet").get("title").asText());
+                video.put("channel", searchItem.get("snippet").get("channelTitle").asText());
+                video.put("thumbnail", searchItem.get("snippet").get("thumbnails").get("high").get("url").asText());
+                video.put("duration", detailItem.get("contentDetails").get("duration").asText());
+
+                videoList.add(video);
+            }
+
+            // 5. 결과 반환
+            ObjectNode result = mapper.createObjectNode();
+            result.set("videos", videoList);
+            result.put("nextPageToken", searchResponse.has("nextPageToken")
+                    ? searchResponse.get("nextPageToken").asText() : "");
 
             return ResponseEntity.ok(result);
 
